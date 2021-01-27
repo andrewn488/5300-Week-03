@@ -59,3 +59,19 @@ z_AN <- beta1_hat_AN - 0 / se_beta1_hat_AN
 z_100_AN <- beta1_hat_AN - 100 / se_beta1_hat_AN
 
 # end of lessons.
+
+data(Cowles, package = 'carData')
+vtable(Cowles)
+cowles <- lm(neuroticism ~ extraversion, data = Cowles)
+export_summs(cowles, digits = 3, error_format = '(t = {statistic}, p = {p.value})')
+beta1_hat_HW <- coef(cowles)[[2]]
+summary(cowles)
+se_beta1_hat_HW <- summary(cowles)$coefficients[2,2]
+
+# calculate confidence intervals
+beta1_hat_HW - 1.96 * se_beta1_hat_HW
+beta1_hat_HW + 1.96 * se_beta1_hat_HW
+
+# linear hypothesis: 
+personality_reg <- linearHypothesis(cowles, 'extraversion = -.18')
+personality_reg_robust <- linearHypothesis(cowles, 'extraversion = -.2', white.adjust = TRUE)
